@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use App\Http\Controllers\ShortLinkController;
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +15,17 @@ use App\Http\Controllers\ShortLinkController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'name' => 'John Doe'
+    ]);
 });
 
-Route::get('/shorten', [ShortLinkController::class, 'index']);
-Route::post('/shorten', [ShortLinkController::class, 'store'])->name('shorten.store');
-Route::get('/{shorten}', [ShortLinkController::class, 'show'])->name('shorten.show');
-Route::delete('/{shorten}', [ShortLinkController::class, 'destroy'])->name('shorten.destroy');
+Route::resource('shorten', ShortLinkController::class);
+// Route::get('/shorten', [ShortLinkController::class, 'index'])->name('shorten.index');
+// Route::get('/shorten/create', [ShortLinkController::class, 'create'])->name('shorten.create');
+// Route::post('/shorten', [ShortLinkController::class, 'store'])->name('shorten.store');
+// Route::get('/{shorten}', [ShortLinkController::class, 'show'])->name('shorten.show');
+// Route::get('/{id}/edit', [ShortLinkController::class, 'edit'])->name('shorten.edit');
+// Route::put('/shorten/{id}', [ShortLinkController::class, 'update'])->name('shorten.update');
+// Route::delete('/{shorten}', [ShortLinkController::class, 'destroy'])->name('shorten.destroy');
 Route::delete('/{shorten}/stats', [ShortLinkController::class, 'stats'])->name('shorten.stats');

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Http;
 use App\Models\ShortLink;
+use Inertia\Inertia;
 
 class ShortLinkController extends Controller
 {
@@ -17,8 +18,9 @@ class ShortLinkController extends Controller
     public function index()
     {
         $shortLinks = ShortLink::latest()->get();
-        // dd($shortLinks);
-        return view('short_link', compact('shortLinks'));
+   
+        // return view('short_link', compact('shortLinks'));
+        return Inertia::render('ShortLink', ['shortLinks' => $shortLinks]);
     }
 
     /**
@@ -28,7 +30,7 @@ class ShortLinkController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('CreateLink');
     }
 
     /**
@@ -39,6 +41,7 @@ class ShortLinkController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'link' => 'required|url'
         ]);
@@ -48,7 +51,7 @@ class ShortLinkController extends Controller
         // $shortCode = 'utoVT';
         
         $existCode = ShortLink::where('shortcode', $shortCode)->count();
-        $reqUrl = Http::timeout(15)->get($request->link);
+        // $reqUrl = Http::timeout(15)->get($request->link);
 
         // dd($reqUrl);
         // dd($existCode);
@@ -75,9 +78,25 @@ class ShortLinkController extends Controller
             $resCode = 201;
         }
 
-        return response()->json($res, $resCode)->header('Content-Type', 'application/json');
+        // return response()->json($res, $resCode)->header('Content-Type', 'application/json');
+        return redirect()->route('shorten.index');
     }
 
+    public function edit($id)
+    {
+        $link = ShortLink::find($id);
+        return Inertia::render('UpdateLink', [
+            'link' => $link,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        ShortLink::where('id', $id)
+        ->update(['url' => $request->link]);
+
+        return redirect()->route('shorten.index');
+    }
     /**
      * Display the specified resource.
      *
@@ -128,6 +147,6 @@ class ShortLinkController extends Controller
         $link = ShortLink::find($id);
         $link->delete();
 
-        return redirect('/')->with('success', 'Data berhasil dihapus!');
+        return redirect()->route('shorten.index');
     }
 }
