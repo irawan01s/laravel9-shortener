@@ -51,7 +51,7 @@ class ShortLinkController extends Controller
         // $shortCode = 'utoVT';
         
         $existCode = ShortLink::where('shortcode', $shortCode)->count();
-        // $reqUrl = Http::timeout(15)->get($request->link);
+        $reqUrl = Http::timeout(15)->get($request->link);
 
         // dd($reqUrl);
         // dd($existCode);

@@ -3,6 +3,7 @@ import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from '@inertiajs/progress'
 
 createInertiaApp({
+  title: (title) => `${title} - Short Link`,
   resolve: name => require(`./Pages/${name}`),
   setup({ el, App, props, plugin }) {
     createApp({ render: () => h(App, props) })

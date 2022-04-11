@@ -28,4 +28,4 @@ Route::resource('shorten', ShortLinkController::class);
 // Route::get('/{id}/edit', [ShortLinkController::class, 'edit'])->name('shorten.edit');
 // Route::put('/shorten/{id}', [ShortLinkController::class, 'update'])->name('shorten.update');
 // Route::delete('/{shorten}', [ShortLinkController::class, 'destroy'])->name('shorten.destroy');
-Route::delete('/{shorten}/stats', [ShortLinkController::class, 'stats'])->name('shorten.stats');
+Route::get('/{shorten}/stats', [ShortLinkController::class, 'stats'])->name('shorten.stats');
